@@ -22,10 +22,6 @@ Node::Node(char v, int f, Node *g, Node *d)
 	setGauche(*g);
 	setDroite(*d);
 }
-Node::~Node()
-{
-	//cout << "Detruit" << endl;
-}
 
 //GETTERS
 char Node::getVal()const 

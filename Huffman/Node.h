@@ -14,7 +14,6 @@ class Node
         Node();
         Node(char v, int f);
         Node(char v, int f, Node *g, Node *d);
-        ~Node();
 
         //GETTERS
         char getVal()const;
