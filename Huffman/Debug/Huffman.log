@@ -1,2 +1,5 @@
 ﻿  Source.cpp
+C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(30,18): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(125,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(142,21): warning C4018: '<' : incompatibilité signed/unsigned
   Huffman.vcxproj -> C:\Users\rds\source\repos\Huffman\Debug\Huffman.exe
