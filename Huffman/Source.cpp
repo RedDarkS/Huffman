@@ -173,30 +173,30 @@ void createTree(vector<Node*> q)
 
 	int stop = g.size();
 
-	while (g.size() >=2)//tree.size() <= stop - 2
+	while (tree.size() <= stop - 2)
 	{
 		for (int i = 0; i < g.size(); i++) 
 		{
-			if (g[i]->getFreq() <= n1->getFreq() && g[i] != n2)
+			if (g[i]->getFreq() < n1->getFreq() && g[i] != n2)
 			{
-				//g.push_back(n1);
+				g.push_back(n1);
 
 				n1 = g[i];
 				g[i] = g[g.size()-1];
-				g[g.size() - 1] = n1;
+				g[g.size()-1] = n1;
 
 				g.pop_back();
 			}
 		}
 		for (int j = 0; j < g.size(); j++)
 		{
-			if (g[j]->getFreq() <= n2->getFreq() && g[j] != n1)
+			if (g[j]->getFreq() < n2->getFreq() && g[j] != n1)
 			{
-				//g.push_back(n2);
+				g.push_back(n2);
 
 				n2 = g[j];
-				g[j] = g[g.size() - 1];
-				g[g.size() - 1] = n2;
+				g[j] = g[g.size()-1];
+				g[g.size()-1] = n2;
 
 				g.pop_back();
 			}
@@ -211,11 +211,11 @@ void createTree(vector<Node*> q)
 
 		Node* n3 = new Node('$', temp, n1, n2);
 
+		//g.push_back(&*n3);
+		tree.push(&*n3);
+
 		n1 = g[0];
 		n2 = g[0];
-
-		g.push_back(&*n3);
-		tree.push(&*n3);
 	}
 
 	cout << endl;

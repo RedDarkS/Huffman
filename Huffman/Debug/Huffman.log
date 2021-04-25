@@ -2,6 +2,7 @@
 C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(33,19): warning C4018: '<' : incompatibilité signed/unsigned
 C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(134,21): warning C4018: '<' : incompatibilité signed/unsigned
 C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(154,21): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(176,21): warning C4018: '<=' : incompatibilité signed/unsigned
 C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(178,21): warning C4018: '<' : incompatibilité signed/unsigned
 C:\Users\rds\source\repos\Huffman\Huffman\Source.cpp(191,21): warning C4018: '<' : incompatibilité signed/unsigned
   Huffman.vcxproj -> C:\Users\rds\source\repos\Huffman\Debug\Huffman.exe
