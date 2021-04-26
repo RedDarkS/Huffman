@@ -24,19 +24,19 @@ Node::Node(char v, int f, Node *g, Node *d)
 }
 
 //GETTERS
-char Node::getVal()const 
+char Node::getVal() 
 {
 	return val;
 }
-int Node::getFreq() const 
+int Node::getFreq()
 {
 	return freq;
 }
-Node Node::getGauche() const 
+Node Node::getGauche()
 {
 	return *gauche;
 }
-Node Node::getDroite() const 
+Node Node::getDroite() 
 {
 	return *droite;
 }

@@ -5,8 +5,8 @@ class Node
 	private :
 		char val;
 		int freq = 0;
-		Node *gauche;
-		Node *droite;
+		Node* gauche = nullptr;
+		Node* droite = nullptr;
 
 	public :
 
@@ -16,10 +16,10 @@ class Node
         Node(char v, int f, Node *g, Node *d);
 
         //GETTERS
-        char getVal()const;
-        int getFreq() const;
-        Node getGauche() const;
-        Node getDroite() const;
+        char getVal();
+        int getFreq();
+        Node getGauche();
+        Node getDroite();
 
         //SETTERS
         void setVal(char v);

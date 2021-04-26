@@ -25,210 +25,63 @@ Et donc on enchaine les noueuds jusqu'à former toutes les branches et les feuill
 
 using namespace std;
 
-//affichage vecteur
-void showVec(vector<Node*> v)
+//comparaison pour les priority queue
+struct comp 
 {
-	vector<Node*> g = v;
-
-	for(int i = 0; i < g.size(); i++)
+	bool operator()(Node* g, Node* d) 
 	{
-		cout << '\t' << g[i]->getVal() << ":" << g[i]->getFreq();
+		return g->getFreq() > d->getFreq();
 	}
-	cout << endl;
-}
-
-//affichage priority queue type int
-
-void showpq(priority_queue<int> gq)
-{
-	priority_queue<int> g = gq;
-
-	while (!g.empty()) 
-	{
-		cout << '\t' << g.top();
-		g.pop();
-	}
-	cout << endl;
-}
-
-//affichage priority queue type char
-
-void showpqChar(priority_queue<char> t)
-{
-	priority_queue<char> g = t;
-
-	while (!g.empty()) 
-	{
-		cout << '\t' << g.top();
-		g.pop();
-	}
-	cout << endl;
-}
-
-//affichage priority queue type Node
-
-void showpqNode(priority_queue<Node*> t)
-{
-	priority_queue<Node*> g = t;
-
-	while (!g.empty()) 
-	{
-		cout << '\t' << g.top()->getVal() << ":" << g.top()->getFreq();
-		g.pop();
-	}
-	cout << endl;
-}
-
-//affichage priority queue type int croissant
-
-void showQ(priority_queue<int, vector<int>, greater<int> > q)
-{
-	priority_queue<int, vector<int>, greater<int> > g = q;
-
-	while (!g.empty()) 
-	{
-		cout << '\t' << g.top();
-		g.pop();
-	}
-	cout << '\n';
-}
+};
 
 //affichage priority queue type Node croissant
 
-void showQNode(priority_queue<Node*, vector<Node*>, greater<Node*> > q)
+void showQNode(priority_queue<Node*, vector<Node*>, comp> q)
 {
-	priority_queue<Node*, vector<Node*>, greater<Node*> > g = q;
-
-	while (!g.empty())
+	while (!q.empty())
 	{
-		cout << '\t' << g.top()->getVal() << ":" << g.top()->getFreq();
-		g.pop();
+		cout << '\t' << q.top()->getVal() << ":" << q.top()->getFreq();
+		q.pop();
 	}
 	cout << '\n';
 }
 
 //creation de l'arbre
 
-vector<Node*> Reducteur(vector<Node*> l) 
+Node* createTree(priority_queue<Node*, vector<Node*>, comp> tree)
 {
-	vector<Node*> liste = l;
-
-	if (liste.size() <= 2) 
+	while (tree.size() > 1)
 	{
-		return liste;
+		Node* gauche = tree.top(); 
+		tree.pop();
+
+		Node* droite = tree.top(); 
+		tree.pop();
+
+		int somme = gauche->getFreq() + droite->getFreq();
+		tree.push(new Node('$', somme, gauche, droite));
+	}
+
+	return tree.top();
+}
+
+void encodage(Node *r, string s, map<char, string>& e) 
+{
+	if (r == nullptr) 
+	{
+		return;
 	}
 	else 
 	{
-		int indexmin1 = 0, indexmin2 = 1, indextemp;
-		int min1 = liste[indexmin1]->getFreq(), min2 = liste[indexmin2]->getFreq(), mintemp;
-
-		if (min1 > min2) 
-		{ //On aura toujours min2 >= min1
-			mintemp = min1;
-			min1 = min2;
-			min2 = mintemp;
-			indextemp = indexmin1;
-			indexmin1 = indexmin2;
-			indexmin2 = indextemp;
-		}
-		for (int i = 2; i < liste.size(); i++) 
+		if (!&r->getGauche() && !&r->getDroite())
 		{
-			if (liste[i]->getFreq() < min2)
-			{
-				min2 = liste[i]->getFreq();
-				indexmin2 = i;
-			}
-			if (min1 > min2) 
-			{
-				mintemp = min1;
-				min1 = min2;
-				min2 = mintemp;
-				indextemp = indexmin1;
-				indexmin1 = indexmin2;
-				indexmin2 = indextemp;
-			}
+			e[r->getVal()] = s;
 		}
 
-		vector<Node*> tree;
-
-		for (int i = 0; i < liste.size(); i++) 
-		{
-			if (i != indexmin1 && i != indexmin2)
-			{
-				tree.push_back(liste[i]);
-			}
-		}
-		return Reducteur(tree);
+		encodage(&r->getGauche(), s + "0", e);
+		encodage(&r->getDroite(), s + "1", e);
 	}
 }
-
-void createTree(vector<Node*> q)
-{
-	vector<Node*> g = q;
-
-	priority_queue<Node*, vector<Node*>, greater<Node*> > tree;
-
-	Node* n1 = g[0];
-	Node* n2 = g[0];
-
-	int stop = g.size();
-
-	while (tree.size() <= stop - 2)
-	{
-		for (int i = 0; i < g.size(); i++) 
-		{
-			if (g[i]->getFreq() < n1->getFreq() && g[i] != n2)
-			{
-				g.push_back(n1);
-
-				n1 = g[i];
-				g[i] = g[g.size()-1];
-				g[g.size()-1] = n1;
-
-				g.pop_back();
-			}
-		}
-		for (int j = 0; j < g.size(); j++)
-		{
-			if (g[j]->getFreq() < n2->getFreq() && g[j] != n1)
-			{
-				g.push_back(n2);
-
-				n2 = g[j];
-				g[j] = g[g.size()-1];
-				g[g.size()-1] = n2;
-
-				g.pop_back();
-			}
-		}
-
-		cout << n1->getVal() << ":" << n1->getFreq() << endl;
-
-		cout << n2->getVal() << ":" << n2->getFreq() << endl;
-
-		int temp = n1->getFreq() + n2->getFreq();
-		cout << "temp = " << temp << endl;
-
-		Node* n3 = new Node('$', temp, n1, n2);
-
-		//g.push_back(&*n3);
-		tree.push(&*n3);
-
-		n1 = g[0];
-		n2 = g[0];
-	}
-
-	cout << endl;
-
-	cout << "g: ";
-	showVec(g);
-	cout << "g.size() = " << g.size() << endl << endl;
-
-	cout << "tree: ";
-	showQNode(tree);
-	cout << "tree.size() = " << tree.size() << endl << endl;
-}
-
 
 int main()
 {
@@ -238,16 +91,10 @@ int main()
 	map<char, int> inv;
 	map<char, int>::iterator it;
 
-	//décroissant
-	priority_queue<char> test;
-	priority_queue<int> test2;
-	priority_queue<Node*> test3;
+	map<char, string> encoding;
 
 	//croissant
-	priority_queue<int, vector<int>, greater<int> > test4;
-	priority_queue<Node*, vector<Node*>, greater<Node*> > test5;
-
-	vector<Node*> tab;
+	priority_queue<Node*, vector<Node*>, comp> tree;
 
 	fs.open("Lyrics.txt");
 	
@@ -266,115 +113,40 @@ int main()
 		}
 	}
 
-	//parcourt et affichage de chaque lettre et son occurence. Et mise en place des priority queue
-
 	for (auto i : inv) //auto au lieu de pair<string, string> - ça détecte le type tout seul
 	{
-		//cout << "i.first : " << i.first << " : i.second : " << i.second << endl;
-
-		test.push(i.first);
-
-		test2.push(i.second);
-
-		test4.push(i.second);
-
-		Node *n = new Node(i.first, i.second);
-
-		test3.push(&*n);
-		test5.push(&*n);
-		tab.push_back(&*n);
-
-		cout << i.first << " : " << i.second << endl;
+		//mise en place des priority queue
+		tree.push(new Node(i.first, i.second));
 	}
 
 	cout << endl;
 	cout << "------------------------------" << endl << endl;
 
-	//lettres
+	//priority queue version node
 
-	/*cout << "La priority queue test contient : ";
-	showpqChar(test);
+	cout << "La priority queue tree contient : ";
+	showQNode(tree);
 
-	cout << "\n test.size() : " << test.size();
-	cout << "\n test.top() : " << test.top();
+	cout << "\n tree.size() : " << tree.size();
+	cout << "\n tree.top() : " << tree.top()->getVal() << ":" << tree.top()->getFreq();
 
-	cout << "\n test.pop() : "<<endl;
-	test.pop();
-	showpqChar(test);
-
-	cout << endl;
-	cout << "------------------------------" << endl << endl;*/
-
-	//chiffres
-
-	/*cout << "La priority queue test2 contient : ";
-	showpq(test2);
-
-	cout << "\n test2.size() : " << test2.size();
-	cout << "\n test2.top() : " << test2.top();
-
-	cout << "\n test2.pop() : "<<endl;
-	test2.pop();
-	showpq(test2);
-
-	cout << endl;
-	cout << "------------------------------" << endl << endl;*/
-
-	//Node
-
-	/*cout << "La priority queue test3 contient : ";
-	showpqNode(test3);
-
-	cout << "\n test3.size() : " << test3.size();
-	cout << "\n test3.top() : " << test3.top()->getVal() << ":" << test3.top()->getFreq();
-
-	cout << "\n test3.pop() : " << endl;
-	test3.pop();
-	showpqNode(test3);
-
-	cout << endl;
-	cout << "------------------------------" << endl << endl;*/
-
-	//l'autre priority queue
-
-	/*cout << "La priority queue test4 contient : ";
-	showQ(test4);
-
-	cout << "\n test4.size() : " << test4.size();
-	cout << "\n test4.top() : " << test4.top();
-
-	cout << "\n test4.pop() : " << endl;
-	test4.pop();
-	showQ(test4);
-
-	cout << endl;
-	cout << "------------------------------" << endl << endl;*/
-
-	//l'autre priority queue version node
-
-	/*cout << "La priority queue test5 contient : ";
-	showQNode(test5);
-
-	cout << "\n test5.size() : " << test5.size();
-	cout << "\n test5.top() : " << test5.top()->getVal() << ":" << test5.top()->getFreq();
-
-	cout << "\n test5.pop() : " << endl;
-	test5.pop();
-	showQNode(test5);
-
-	cout << endl;
-	cout << "------------------------------" << endl << endl;*/
-
-	cout << "tab (taille " << tab.size() << ") : "<< endl;
-	showVec(tab);
+	Node* racine = createTree(tree);
 
 	cout << endl;
 	cout << "------------------------------" << endl << endl;
 
-	createTree(tab);
+	cout << "racine : " << racine->getVal() << " : " << racine->getFreq() << endl;
 
-	/*cout << "tree :" << endl;
-	showVec(Reducteur(tab));*/
+	cout << endl;
+	cout << "------------------------------" << endl << endl;
+
+	encodage(racine, "", encoding);
+	cout << "Encodage :" << endl;
+
+	for (auto i : encoding) 
+	{
+		cout << i.first << " : " << i.second << endl;
+	}
 
 	return 0;
 }
