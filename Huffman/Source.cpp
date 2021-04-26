@@ -65,22 +65,39 @@ Node* createTree(priority_queue<Node*, vector<Node*>, comp> tree)
 	return tree.top();
 }
 
-void encodage(Node *r, string s, map<char, string>& e) 
+void encodage(Node* r, string s, map<char, string>& e) 
 {
-	if (r == nullptr) 
+	if ( r == nullptr)
 	{
 		return;
 	}
 	else 
 	{
-		if (!&r->getGauche() && !&r->getDroite())
-		{
-			e[r->getVal()] = s;
-		}
-
-		encodage(&r->getGauche(), s + "0", e);
-		encodage(&r->getDroite(), s + "1", e);
+		e[r->getVal()] = s;
+		
+		encodage(r->getGauche(), s + "0", e);
+		encodage(r->getDroite(), s + "1", e);
 	}
+}
+
+string textToCode(string t, map<char, string> e) 
+{
+	string result;
+	for (char c : t)
+	{ 
+		result += e[c];
+	}
+	return result;
+}
+
+void decodage() 
+{
+
+}
+
+string translate() 
+{
+	return "";
 }
 
 int main()
@@ -88,6 +105,8 @@ int main()
 	fstream fs;
 
 	char c;
+
+	string texte = "";
 	map<char, int> inv;
 	map<char, int>::iterator it;
 
@@ -103,6 +122,7 @@ int main()
 	while (fs.get(c))
 	{
 		cout << c;
+		texte += c;
 		if (inv.find(c) != inv.end())
 		{
 			inv.find(c)->second += 1;
@@ -147,6 +167,11 @@ int main()
 	{
 		cout << i.first << " : " << i.second << endl;
 	}
+
+	string textCode = textToCode(texte, encoding);
+
+	cout << "Code :" << endl;
+	cout << textCode << endl;
 
 	return 0;
 }

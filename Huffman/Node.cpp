@@ -32,13 +32,13 @@ int Node::getFreq()
 {
 	return freq;
 }
-Node Node::getGauche()
+Node* Node::getGauche()
 {
-	return *gauche;
+	return gauche;
 }
-Node Node::getDroite() 
+Node* Node::getDroite() 
 {
-	return *droite;
+	return droite;
 }
 
 //SETTERS
