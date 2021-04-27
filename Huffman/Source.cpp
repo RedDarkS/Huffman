@@ -67,7 +67,7 @@ Node* createTree(priority_queue<Node*, vector<Node*>, comp> tree)
 
 void encodage(Node* r, string s, map<char, string>& e) 
 {
-	if ( r == nullptr)
+	if (r == nullptr)
 	{
 		return;
 	}
@@ -90,32 +90,29 @@ string textToCode(string t, map<char, string> e)
 	return result;
 }
 
-string decodage(Node* n, int i, string s) 
+void decodage(Node* n, int& i, string s) 
 {
-	string result = "";
-
 	if(n == nullptr) 
 	{
-		return result;
+		return;
 	}
 
 	if (n->getGauche() == nullptr && n->getDroite() == nullptr)
 	{
-		result += s[i];
+		cout << n->getVal();
 	}
 
 	i++;
 
-	if (s[i] == '0') 
+	if (s[i] == '0')
 	{
 		decodage(n->getGauche(), i, s);
 	}
-	else 
+	else
 	{
 		decodage(n->getDroite(), i, s);
 	}
-
-	return "Error";
+	
 }
 
 string translate() 
@@ -197,7 +194,8 @@ int main()
 	cout << textCode << endl;
 
 	cout << "decodage :" << endl;
-	decodage(racine, 0, textCode);
+	int i = 0;
+	decodage(racine, i, textCode);
 
 	return 0;
 }
