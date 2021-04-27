@@ -90,9 +90,32 @@ string textToCode(string t, map<char, string> e)
 	return result;
 }
 
-void decodage() 
+string decodage(Node* n, int i, string s) 
 {
+	string result = "";
 
+	if(n == nullptr) 
+	{
+		return result;
+	}
+
+	if (n->getGauche() == nullptr && n->getDroite() == nullptr)
+	{
+		result += s[i];
+	}
+
+	i++;
+
+	if (s[i] == '0') 
+	{
+		decodage(n->getGauche(), i, s);
+	}
+	else 
+	{
+		decodage(n->getDroite(), i, s);
+	}
+
+	return "Error";
 }
 
 string translate() 
@@ -172,6 +195,9 @@ int main()
 
 	cout << "Code :" << endl;
 	cout << textCode << endl;
+
+	cout << "decodage :" << endl;
+	decodage(racine, 0, textCode);
 
 	return 0;
 }
