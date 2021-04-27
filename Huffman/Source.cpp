@@ -91,32 +91,30 @@ string textToCode(string t, map<char, string> e)
 }
 
 //décryptage du message précédement crypté
-void decodage(Node* r, Node* n, int& i, string s) 
+void decodage(Node* n, int& i, string s) 
 {
 	if(i == s.size() || n == nullptr)
 	{
 		return;
 	}
 
-	if(n->getGauche() == nullptr && n->getDroite() == nullptr)
+	if(!n->getGauche() && !n->getDroite())
 	{
 		cout << n->getVal();
-		//i++;
-		decodage(r, r, i, s);
+		return;
 	}
-	else 
-	{
-		i++;
 
-		if (s[i] == '0')
-		{
-			decodage(r, n->getGauche(), i, s);
-		}
-		else
-		{
-			decodage(r, n->getDroite(), i, s);
-		}
+	i++;
+
+	if (s[i] == '0')
+	{
+		decodage(n->getGauche(), i, s);
 	}
+	else
+	{
+		decodage(n->getDroite(), i, s);
+	}
+	
 }
 
 int main()
@@ -200,7 +198,11 @@ int main()
 
 	cout << "Decodage :" << endl << endl ;
 	int i = -1;
-	decodage(racine, racine, i, textCode);
+	//bon ben j'ai oublié mon truc, j'espère que ça ressemble pas trop à votre code
+	while (i < (int)(textCode.size() - 1)) 
+	{
+		decodage(racine, i, textCode);
+	}
 
 	return 0;
 }
